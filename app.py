@@ -1,8 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 from werkzeug.security import generate_password_hash
-from models import User
-from models import db, Post
+from models import db, Post, User
 from forms import PostForm, RegistrationForm, LoginForm
 from config import Config
 
@@ -13,28 +12,34 @@ db.init_app(app)
 # Inicializar o LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  # Redireciona para a página de login se o usuário não estiver autenticado
+# Redireciona para a página de login se o usuário não estiver autenticado
+login_manager.login_view = 'login'
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 @app.route('/')
 def home():
     posts = Post.query.order_by(Post.date_posted.desc()).all()
     return render_template('home.html', posts=posts)
 
+
 @app.route('/post/new', methods=['GET', 'POST'])
 @login_required  # Certifica-se de que o usuário esteja logado
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)  # Associa o post ao usuário logado
+        post = Post(title=form.title.data, content=form.content.data,
+                    author=current_user)  # Associa o post ao usuário logado
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
     return render_template('post.html', title='New Post', form=form)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -43,12 +48,14 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
-        user = User(username=form.username.data, email=form.email.data, password_hash=hashed_password)
+        user = User(username=form.username.data,
+                    email=form.email.data, password_hash=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,10 +72,12 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', form=form)
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
 
 @app.route('/post/<int:post_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -93,6 +102,7 @@ def edit_post(post_id):
 
     return render_template('edit_post.html', form=form, post=post)
 
+
 @app.route('/post/<int:post_id>/delete', methods=['POST'])
 @login_required
 def delete_post(post_id):
@@ -105,6 +115,7 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
 
 @app.route('/post/<int:post_id>', methods=['GET'])
 def post_detail(post_id):

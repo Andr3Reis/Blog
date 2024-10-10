@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Blog Posts</h2>
+    <h2>Publicações</h2>
     {% for post in posts %}
         <article style="position: relative;">
             <h3>{{ post.title }}</h3>
@@ -11,7 +11,7 @@
             {% if current_user.is_authenticated and current_user == post.author %}
                 <div class="btnIcons">
                     <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-warning" title="Edit" style="color: rgb(45, 171, 212);">
-                        <i class="fas fa-edit"></i> <!-- Ícone de editar -->
+                        <i class="fas fa-edit"></i>
                     </a>
                     <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
                         <button type="submit" class="btnDelete">

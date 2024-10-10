@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Register</h2>
+    <h2>Registrar</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
         <p>{{ form.username.label }}<br>{{ form.username() }}</p>
@@ -9,5 +9,5 @@
         <p>{{ form.confirm_password.label }}<br>{{ form.confirm_password() }}</p>
         <p>{{ form.submit() }}</p>
     </form>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+    <p>Ja possui uma conta? <a href="{{ url_for('login') }}">Entrar</a></p>
 {% endblock %}

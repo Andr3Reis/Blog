@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <h1>My Blog</h1>
+        <h1>Meu Blog</h1>
         <nav>
             <a href="{{ url_for('home') }}">Home</a>
             <a href="{{ url_for('new_post') }}">New Post</a>
@@ -21,6 +21,31 @@
         </nav>
     </header>
     <main>
+        <!-- Exibe mensagens flash aqui -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div>
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var alerts = document.querySelectorAll('.alert');
+                
+                setTimeout(function() {
+                    alerts.forEach(function(alert) {
+                        alert.style.display = 'none';
+                    });
+                }, 3000);
+            });
+        </script> -->
+
         {% block content %}{% endblock %}
     </main>
 </body>
