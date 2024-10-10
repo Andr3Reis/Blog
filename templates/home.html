@@ -2,19 +2,24 @@
 {% block content %}
     <h2>Blog Posts</h2>
     {% for post in posts %}
-        <article>
+        <article style="position: relative;">
             <h3>{{ post.title }}</h3>
             <p>{{ post.content }}</p>
             <p><em>{{ post.date_posted.strftime('%Y-%m-%d') }}</em></p>
             
             <!-- Verifica se o usuário logado é o autor do post -->
             {% if current_user.is_authenticated and current_user == post.author %}
-                <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-warning">Edit</a>
-                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+                <div class="btnIcons">
+                    <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-warning" title="Edit" style="color: rgb(45, 171, 212);">
+                        <i class="fas fa-edit"></i> <!-- Ícone de editar -->
+                    </a>
+                    <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btnDelete">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>                    
+                </div>
             {% endif %}
         </article>
     {% endfor %}
 {% endblock %}
-
