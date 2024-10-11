@@ -36,7 +36,7 @@ def new_post():
                     author=current_user)  # Associa o post ao usuário logado
         db.session.add(post)
         db.session.commit()
-        flash('Your post has been created!', 'success')
+        flash('Sua publicação foi criada com sucesso!', 'success')
         return redirect(url_for('home'))
     return render_template('post.html', title='New Post', form=form)
 
@@ -52,7 +52,7 @@ def register():
                     email=form.email.data, password_hash=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
+        flash('Conta criada com sucesso!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
@@ -69,7 +69,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
+            flash('Falha ao entrar. Usuário ou senha inválidos!', 'danger')
     return render_template('login.html', form=form)
 
 
@@ -84,7 +84,7 @@ def logout():
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
-        flash('You are not authorized to edit this post.', 'danger')
+        flash('Autorização negada para editar essa publicação!', 'danger')
         return redirect(url_for('home'))
 
     form = PostForm()
@@ -92,7 +92,7 @@ def edit_post(post_id):
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        flash('Your post has been updated!', 'success')
+        flash('Sua publicação foi atualizada com sucesso!', 'success')
         return redirect(url_for('home', post_id=post.id))
 
     # Pre-fill the form with the current post data
@@ -108,12 +108,12 @@ def edit_post(post_id):
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
-        flash('You are not authorized to delete this post.', 'danger')
+        flash('Autorização negada para excluir essa publicação!', 'danger')
         return redirect(url_for('home'))
 
     db.session.delete(post)
     db.session.commit()
-    flash('Your post has been deleted!', 'success')
+    flash('Sua publicação foi excluida com sucesso!', 'success')
     return redirect(url_for('home'))
 
 

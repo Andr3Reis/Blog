@@ -5,7 +5,7 @@
         {{ form.hidden_tag() }}
         <p>{{ form.email.label }}<br>{{ form.email() }}</p>
         <p>{{ form.password.label }}<br>{{ form.password() }}</p>
-        <p>{{ form.remember() }} Lembrar</p>
+        <p>{{ form.remember() }} Lembrar-me</p>
         <p>{{ form.submit() }}</p>
     </form>
     <p>Não possui conta? <a href="{{ url_for('register') }}">Registrar</a></p>
