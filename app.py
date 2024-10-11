@@ -36,7 +36,7 @@ def new_post():
                     author=current_user)  # Associa o post ao usuário logado
         db.session.add(post)
         db.session.commit()
-        flash('Sua publicação foi criada com sucesso!', 'success')
+        flash('Sua publicação foi criada!', 'success')
         return redirect(url_for('home'))
     return render_template('post.html', title='New Post', form=form)
 
@@ -92,7 +92,7 @@ def edit_post(post_id):
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        flash('Sua publicação foi atualizada com sucesso!', 'success')
+        flash('Sua publicação foi atualizada!', 'success')
         return redirect(url_for('home', post_id=post.id))
 
     # Pre-fill the form with the current post data
@@ -113,7 +113,7 @@ def delete_post(post_id):
 
     db.session.delete(post)
     db.session.commit()
-    flash('Sua publicação foi excluida com sucesso!', 'success')
+    flash('Sua publicação foi excluida!', 'success')
     return redirect(url_for('home'))
 
 
